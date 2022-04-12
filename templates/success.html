@@ -1,0 +1,46 @@
+<!-- templates/success.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      const message = {
+        id: '{{.User.UserID}}',
+        displayName: '{{.User.Name}}',
+        email: '{{.User.Email}}',
+        photo: '{{.User.AvatarURL}}',
+        jwt: '{{.JWT}}',
+        name: {
+          firstName: '{{.User.FirstName}}',
+          lastName: '{{.User.LastName}}'
+        }
+      };
+
+      window.opener.postMessage(message, '*');
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="text-success text-center">
+          <span class="fa fa-user"></span> Profile Information
+        </h1>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="well">
+              <p>
+                <strong>Id</strong>: {{.User.UserID}}<br />
+                <strong>Email</strong>: {{.User.Email}}<br />
+                <strong>Display Name</strong>: {{.User.Name}}<br />
+                <strong>First Name</strong>: {{.User.FirstName}}<br />
+                <strong>Last Name</strong>: {{.User.LastName}}<br />
+                <strong>Photo</strong>:{{.User.AvatarURL}}<br />
+                <strong>Email</strong>:{{.User.Email}}<br />
+                <strong>JWT</strong>:{{.Jwt}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
