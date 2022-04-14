@@ -8,7 +8,11 @@ require (
 	github.com/markbates/goth v1.69.0
 )
 
-require github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+require (
+	github.com/form3tech-oss/jwt-go v3.2.2+incompatible // indirect
+	github.com/goccy/go-json v0.9.6 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+)
 
 require (
 	cloud.google.com/go v0.67.0 // indirect
