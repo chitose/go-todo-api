@@ -12,6 +12,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+
+	"github.com/chitose/todo-api/api"
 )
 
 func main() {
@@ -33,15 +35,17 @@ func main() {
 	// jwt middleware
 	r.Use(jwtMiddleware)
 
-	r.HandleFunc("/auth/{provider}", authHandler)
-	r.HandleFunc("/auth/{provider}/callback", authCallbackHandler)
-	r.HandleFunc("/", homeHandler)
+	api.SetupRouter(r)
 
-	setupUserRouter(r)
+	port := os.Getenv("PORT")
+
+	if len(port) == 0 {
+		port = "3000"
+	}
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "127.0.0.1:3000",
+		Addr:         "127.0.0.1:" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -49,7 +53,7 @@ func main() {
 
 	// run the server in a goroutine -> non block
 	go func() {
-		log.Println("listening on localhost:3000")
+		log.Println("listening on localhost:" + port)
 		if err := srv.ListenAndServe(); err != nil {
 			log.Println(err)
 		}

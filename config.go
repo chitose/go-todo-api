@@ -3,12 +3,15 @@ package main
 import (
 	"os"
 
+	"github.com/chitose/todo-api/schema"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 )
 
 func setup() {
+	schema.ConfigureDatabase()
+
 	maxAge := 86400 * 30 // 30 days
 	isProd := false
 

@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"fmt"
@@ -6,7 +6,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/chitose/todo-api/schema/dao"
+	"github.com/chitose/todo-api/schema/model"
 	"github.com/golang-jwt/jwt"
+	"github.com/guregu/null"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 )
@@ -40,6 +43,27 @@ func authCallbackHandler(res http.ResponseWriter, req *http.Request) {
 	t, _ := template.ParseFiles("templates/success.html")
 
 	data := OauthData{user, tokenString}
+
+	ctx := req.Context()
+
+	dbUser, err := dao.GetUser(ctx, user.UserID)
+	if dbUser.ID == "" || err != nil {
+		// add the authenticated user
+		dao.AddUser(ctx, &model.User{
+			ID:          user.UserID,
+			DisplayName: null.StringFrom(user.FirstName + " " + user.LastName),
+			Photo:       null.StringFrom(user.AvatarURL),
+			Email:       null.StringFrom(user.Email),
+		})
+
+		// and default project (inbox)
+		dao.AddProject(ctx, &model.Project{
+			DefaultInbox: 1,
+			Name:         "Inbox",
+			View:         1,
+			Archived:     0,
+		})
+	}
 
 	t.Execute(res, data)
 }

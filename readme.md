@@ -6,4 +6,5 @@ the default callback is http://localhost:3000/auth/{provider}/callback
 {provider} : OAuth provider e.g google, twitter, facebook...etc.
 
 start the app
-go run *.go
+go run *.go (linux)
+go run ./ (Windows)

@@ -20,12 +20,12 @@ func jwtMiddleware(next http.Handler) http.Handler {
 		}
 
 		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
-		if len(authHeader) != 1 {
+		if len(authHeader) != 2 {
 			fmt.Println("Malformed token")
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Malformed Token"))
 		} else {
-			jwtToken := authHeader[0]
+			jwtToken := authHeader[1]
 			token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
